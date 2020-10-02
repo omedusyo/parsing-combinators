@@ -1,0 +1,14 @@
+{
+  "name": "parsing-combinators",
+  "version": "1.0.0",
+  "description": "General parsing (parsing combinators) js library.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yuriy Dupyn",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
