@@ -186,7 +186,33 @@ export const then4 = (p1, p2, p3, p4, f) => sequence([p1, p2, p3, p4]).map(([x1,
 export const thens = (ps, f) => sequence(ps).map(f);
 
 
-// ===== ADVANCED (PARALLEL?, NON-TERMINATING) STRUCTURE =====
+// ===== ADVANCED (POSSIBLE PARALLEL (?) OR NON-TERMINATING) STRUCTURE =====
+
+// === maximalMunch ===
+// TODO: is this a good name? maximalMunchAtleast0 seems too long
+//       Kleene Star
+// Applies a parser repeatedly and collects it's values into an array
+// until the parserfails, then it succeeds with the collected values
+// this will either always suceed or loop
+// Parser(A) -> Parser(Array(A))
+export function maximalMunch(p) {
+  return Parser(s => {
+    let hasSucceededSoFar = true;
+    const xs = [];
+    while (hasSucceededSoFar) {
+      const v = p.consume(s);
+      if (hasSucceeded(v)) {
+        xs.push(v.val);
+        s = v.rest;
+      } else {
+        hasSucceededSoFar = false;
+      }
+    }
+    return success({val: xs, rest: s});
+  });
+}
+
+// export munchAtleast1
 
 
 // TODO: catch (think of chains of parsers that may return different kinds of messages)

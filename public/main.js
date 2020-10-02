@@ -3,6 +3,7 @@ import {
   Parser, ParserValue,
   succeed, then, first, second, map, pair,
   sequence, then2, thens,
+  maximalMunch,
   digit,
 } from "../src/index";
 
@@ -109,4 +110,13 @@ const thens0 = thens([digit,digit,digit,digit,digit], sum).consume("12345foo");
 // console.log(thens0);
 assert(8.0, thens0.rest == "foo");
 assert(8.1, thens0.val == 1 + 2 + 3 + 4 + 5);
+
+// === maximalMunch ===
+const max0 = maximalMunch(digit).consume("1234foo");
+assert(9.0, max0.rest == "foo");
+assert(9.1, arrayEq(max0.val, [1,2,3,4]));
+
+const max1 = maximalMunch(digit).consume("foo");
+assert(9.2, max1.rest == "foo");
+assert(9.3, arrayEq(max1.val, []));
 
