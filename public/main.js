@@ -1,11 +1,12 @@
 
 import {
-  Parser, ParserValue,
+  ParserValue,
   succeed, then, first, second, map, pair,
   sequence, then2, thens,
   maximalMunch, maximalReduce,
-  digit,
 } from "../src/index";
+
+import { digit } from "./example0_digits";
 
 function assert(id, b) {
   if (b === false) {

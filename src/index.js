@@ -253,46 +253,8 @@ export function maximalReduce(p, initState, f) {
 // TODO: catch (think of chains of parsers that may fail with different kinds of messages)
 // so catch should be like a switch (case) statement
 
-// TODO: or
-
-// ===== HELPERS =====
-// Array(a), a -> Boolean
-function elemIn(xs, x) {
-  return xs.indexOf(x) !== -1;
-}
-
-// String -> Bool
-function isEmptyString(s) {
-  return s.length == 0;
-}
-
-// === Digit ===
-// Character -> Boolean
-function isDigit(d) {
-  return elemIn(["0","1","2","3","4","5","6","7","8","9"], d);
-  // return elemIn("0123456789".split(''), d);
-}
-const digits2values = {
-  ["0"]:0,
-  ["1"]:1,
-  ["2"]:2,
-  ["3"]:3,
-  ["4"]:4,
-  ["5"]:5,
-  ["6"]:6,
-  ["7"]:7,
-  ["8"]:8,
-  ["9"]:9,
-};
-// digit : Parser({0,1,2,3,4,5,6,7,8,9})
-export const digit = Parser(s => {
-  if (isEmptyString(s)) {
-    return failure("Expected a digit instead of empty string");
-  } else if (isDigit(s[0])) {
-    return success({val: digits2values[s[0]], rest: s.slice(1)});
-  } else {
-    return failure(`Expected a digit instead of '${s[0]}'`);
-  }
-});
-
+// sequential or
+// TODO: seqor
+//
+// sequential try
 
