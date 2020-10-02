@@ -1,5 +1,8 @@
 
 # Description
+Compositional Parsers Library
+TODO: conceptually we don't parse finite strings -
+      it's better to think of it as infinite stream of characters (tokens).
 
 TODO
 parsers have very nice imperative feel

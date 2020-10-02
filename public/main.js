@@ -3,7 +3,7 @@ import {
   Parser, ParserValue,
   succeed, then, first, second, map, pair,
   sequence, then2, thens,
-  maximalMunch,
+  maximalMunch, maximalReduce,
   digit,
 } from "../src/index";
 
@@ -102,14 +102,14 @@ assert(6.3, arrayEq(seq1.val, []));
 // === THEN2 ===
 const then2_0 = then2(digit, digit, (x, y) => x + y).consume("45foo");
 assert(7.0, then2_0.rest == "foo");
-assert(7.1, then2_0.val == 4 + 5);
+assert(7.1, then2_0.val === 4 + 5);
 
 // === THENS ===
 const sum = xs => xs.reduce((x, y) => x + y, 0);
 const thens0 = thens([digit,digit,digit,digit,digit], sum).consume("12345foo");
 // console.log(thens0);
 assert(8.0, thens0.rest == "foo");
-assert(8.1, thens0.val == 1 + 2 + 3 + 4 + 5);
+assert(8.1, thens0.val === 1 + 2 + 3 + 4 + 5);
 
 // === maximalMunch ===
 const max0 = maximalMunch(digit).consume("1234foo");
@@ -119,4 +119,14 @@ assert(9.1, arrayEq(max0.val, [1,2,3,4]));
 const max1 = maximalMunch(digit).consume("foo");
 assert(9.2, max1.rest == "foo");
 assert(9.3, arrayEq(max1.val, []));
+
+// === maximalReduce ===
+const maxred0 = maximalReduce(digit, 0, (x, y) => x + y).consume("12345foo");
+// console.log(maxred0);
+assert(10.0, maxred0.rest == "foo");
+assert(10.1, maxred0.val == 1 + 2 + 3 + 4 + 5);
+
+const maxred1 = maximalReduce(digit, 0, (x, y) => x + y).consume("foo");
+assert(10.2, maxred1.rest == "foo");
+assert(10.3, maxred1.val === 0);
 

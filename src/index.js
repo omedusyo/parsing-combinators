@@ -60,6 +60,7 @@ export function Parser(f) {
 }
 
 // ======== PARSING COMBINATORS =========
+
 // ===== BASIC MONAD STRUCTURE =====
 
 // === SUCEED ===
@@ -187,10 +188,11 @@ export const thens = (ps, f) => sequence(ps).map(f);
 
 
 // ===== ADVANCED (POSSIBLE PARALLEL (?) OR NON-TERMINATING) STRUCTURE =====
+// TODO: add bounded munches... i.e. apply a parser atmost n-times, and if it doesn't fail by n-th try, we fail
 
 // === maximalMunch ===
 // TODO: is this a good name? maximalMunchAtleast0 seems too long
-//       Kleene Star
+//       kleeneStar maybe? or just star...
 // Applies a parser repeatedly and collects it's values into an array
 // until the parserfails, then it succeeds with the collected values
 // this will either always suceed or loop
@@ -212,11 +214,44 @@ export function maximalMunch(p) {
   });
 }
 
-// export munchAtleast1
+// Let S be the type of your state values (also called accumulator values?);.
+// Think of A as the type of your actions on your state.
+// Then
+//   p : Parser(A)
+//   initState : S
+//   f : S, A -> S  // this is the JS convention of Array.prototype.reduce
+// so
+//   maximalReduce(p, initState, f) : Parser(S)
+//
+// It repeatedly applies p until it fails.
+// During this repetition we'll generate a stream of values
+//   a1, a2, a3, ...
+// and we'll apply these values to the initial state to get the stream
+//   s1 := initState,
+//   s2 := f(s1, a1),
+//   s3 := f(s2, a2),
+//   ...
+// and when p succeeds with the last an, we succeed with s(n+1)
+export function maximalReduce(p, initState, f) {
+  return Parser(s => {
+    let hasSucceededSoFar = true;
+    let state = initState;
+    while (hasSucceededSoFar) {
+      const v = p.consume(s);
+      if (hasSucceeded(v)) {
+        state = f(state, v.val);
+        s = v.rest;
+      } else {
+        hasSucceededSoFar = false;
+      }
+    }
+    return success({val: state, rest: s});
+  });
+}
 
 
-// TODO: catch (think of chains of parsers that may return different kinds of messages)
-// so catch should be like a switch statement
+// TODO: catch (think of chains of parsers that may fail with different kinds of messages)
+// so catch should be like a switch (case) statement
 
 // TODO: or
 
