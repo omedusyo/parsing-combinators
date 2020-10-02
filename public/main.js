@@ -2,6 +2,7 @@
 import {
   Parser, ParserValue,
   succeed, then, first, second, map, pair,
+  sequence,
   digit,
 } from "../src/index";
 
@@ -87,4 +88,13 @@ const then0parser = digit.then(n => digit.map(m => n + m));
 const then0 = then0parser.consume("12hi");
 assert(5.0, then0.rest == "hi");
 assert(5.1, then0.val == 3);
+
+// === SEQUENCE ===
+const seq0 = sequence([digit, digit, digit]).consume("123foo");
+assert(6.0, seq0.rest == "foo");
+assert(6.1, arrayEq(seq0.val, [1,2,3]));
+
+const seq1 = sequence([]).consume("watev");
+assert(6.2, seq1.rest == "watev");
+assert(6.3, arrayEq(seq1.val, []));
 

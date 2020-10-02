@@ -4,6 +4,12 @@
 TODO
 parsers have very nice imperative feel
 
+conventions:
+  v, w are parse result values
+  p, q, r are parsers
+  s is a string
+  a,b,c, x,y,z are values
+
 # Installation
 ```
 npm install https://github.com/omedusyo/parsing-combinators.git

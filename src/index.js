@@ -11,20 +11,20 @@
 // that consumes
 
 // ===== PARSERS =====
-function failure(x) {
-  return { hasSuceeded: false, message: x };
+function failure(msg) {
+  return { hasSuceeded: false, message: msg };
 }
 
-function hasFailed(f) {
-  return !f.hasSuceeded;
+function hasFailed(v) {
+  return !v.hasSuceeded;
 }
 
 function success({rest, val}) {
   return { hasSuceeded: true, rest, val };
 }
 
-function hasSucceeded(p) {
-  return p.hasSuceeded;
+function hasSucceeded(v) {
+  return v.hasSuceeded;
 }
 
 export const ParserValue = {
@@ -65,8 +65,8 @@ export function Parser(f) {
 //
 // Parser(A), (A -> Parser(B)) -> Parser(B)
 export function then(p, f) {
-  return Parser(x => {
-    const v = p.consume(x);
+  return Parser(s => {
+    const v = p.consume(s);
     if (hasSucceeded(v)) {
       return f(v.val).consume(v.rest);
     } else {
@@ -77,8 +77,8 @@ export function then(p, f) {
 
 // Parser(A), Parser(B) -> Parser(B)
 export function second(p, q) {
-  return Parser(x => {
-    const v = p.consume(x);
+  return Parser(s => {
+    const v = p.consume(s);
     if (hasSucceeded(v)) {
       return q.consume(v.rest);
     } else {
@@ -89,8 +89,8 @@ export function second(p, q) {
 
 // Parser(A), Parser(B) -> Parser(B)
 export function first(p, q) {
-  return Parser(x => {
-    const v = p.consume(x);
+  return Parser(s => {
+    const v = p.consume(s);
     if (hasSucceeded(v)) {
       const w = q.consume(v.rest);
       if (hasSucceeded(w)) {
@@ -106,8 +106,8 @@ export function first(p, q) {
 
 // Parser(A), (A -> B) -> Parser(B)
 export function map(p, f) {
-  return Parser(x => {
-    const v = p.consume(x);
+  return Parser(s => {
+    const v = p.consume(s);
     if (hasSucceeded(v)) {
       return success({val: f(v.val), rest: v.rest});
     } else {
@@ -121,14 +121,32 @@ export function map(p, f) {
 //
 // Parser(A), Parser(B) -> Parser([A, B]) // [A, B] is the cartesian product
 export function pair(p, q) {
-  return Parser(x => {
-    const v = p.consume(x);
+  return Parser(s => {
+    const v = p.consume(s);
     if (hasSucceeded(v)) {
       const w = q.consume(v.rest);
       return success({val: [v.val, w.val], rest: w.rest});
     } else {
       return v;
     }
+  });
+}
+
+// Array(Parser(A)) -> Parser(Array(A))
+export function sequence(ps) {
+  return Parser(s => {
+    let xs = [];
+    let v;
+    for (let i = 0; i < ps.length; i++) {
+      v = ps[i].consume(s);
+      if (hasSucceeded(v)) {
+        s = v.rest;
+        xs.push(v.val);
+      } else {
+        return v;
+      }
+    }
+    return success({val: xs, rest: s});
   });
 }
 
