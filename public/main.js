@@ -2,7 +2,7 @@
 import {
   Parser, ParserValue,
   succeed, then, first, second, map, pair,
-  sequence,
+  sequence, then2, thens,
   digit,
 } from "../src/index";
 
@@ -97,4 +97,16 @@ assert(6.1, arrayEq(seq0.val, [1,2,3]));
 const seq1 = sequence([]).consume("watev");
 assert(6.2, seq1.rest == "watev");
 assert(6.3, arrayEq(seq1.val, []));
+
+// === THEN2 ===
+const then2_0 = then2(digit, digit, (x, y) => x + y).consume("45foo");
+assert(7.0, then2_0.rest == "foo");
+assert(7.1, then2_0.val == 4 + 5);
+
+// === THENS ===
+const sum = xs => xs.reduce((x, y) => x + y, 0);
+const thens0 = thens([digit,digit,digit,digit,digit], sum).consume("12345foo");
+// console.log(thens0);
+assert(8.0, thens0.rest == "foo");
+assert(8.1, thens0.val == 1 + 2 + 3 + 4 + 5);
 
