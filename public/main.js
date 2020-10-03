@@ -11,6 +11,7 @@ import {
 
 import { digit } from "./example0_digits";
 import { cCharacter, character } from "./example1_letters";
+import { nat } from "./example2_numbers";
 
 function assert(id, b) {
   if (b === false) {
@@ -246,4 +247,34 @@ assert("string:1", string0.val === "foo");
 const string1 = string("").consume("xxx");
 assert("string:2", string1.rest == "xxx");
 assert("string:3", string1.val === "");
+
+
+// === nat ===
+const nat0 = nat.consume("123xxx");
+assert("nat:0", nat0.rest == "xxx");
+assert("nat:1", nat0.val == 123);
+
+const nat1 = nat.consume("00123xxx");
+assert("nat:2", nat1.rest == "xxx");
+assert("nat:3", nat1.val == 123);
+
+const nat2 = nat.consume("00xxx");
+assert("nat:3", nat2.rest == "xxx");
+assert("nat:4", nat2.val == 0);
+
+const nat3 = nat.consume("0xxx");
+assert("nat:5", nat3.rest == "xxx");
+assert("nat:6", nat3.val == 0);
+
+const nat4 = nat.consume("xxx");
+// console.log(nat4);
+assert("nat:7", ParserValue.hasFailed(nat4));
+
+const nat5 = nat.consume("");
+// console.log(nat5);
+assert("nat:8", ParserValue.hasFailed(nat5));
+
+const nat6 = nat.consume("-5");
+// console.log(nat6);
+assert("nat:9", ParserValue.hasFailed(nat6));
 
