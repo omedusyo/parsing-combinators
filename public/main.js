@@ -126,6 +126,15 @@ const max1 = maximalMunch(digit).consume("foo");
 assert("maximalMunch:2", max1.rest == "foo");
 assert("maximalMunch:3", arrayEq(max1.val, []));
 
+// === maximalMunchDiscard ===
+const maxd0 = maximalMunchDiscard(digit).consume("1234foo");
+assert("maximalMunchDiscard:0", maxd0.rest == "foo");
+assert("maximalMunchDiscard:1", maxd0.val === undefined);
+
+const maxd1 = maximalMunchDiscard(digit).consume("foo");
+assert("maximalMunchDiscard:2", maxd1.rest == "foo");
+assert("maximalMunchDiscard:3", maxd1.val === undefined);
+
 // === maximalReduce ===
 const maxred0 = maximalReduce(digit, 0, (x, y) => x + y).consume("12345foo");
 // console.log(maxred0);

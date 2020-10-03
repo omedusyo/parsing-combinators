@@ -217,6 +217,23 @@ export function maximalMunch(p) {
   });
 }
 
+// like maximalMunch, but doesn't keep track of values in an array
+// Parser(A) -> Parser({undefined})
+export function maximalMunchDiscard(p) {
+  return Parser(s => {
+    let hasSucceededSoFar = true;
+    while (hasSucceededSoFar) {
+      const v = p.consume(s);
+      if (hasSucceeded(v)) {
+        s = v.rest;
+      } else {
+        hasSucceededSoFar = false;
+      }
+    }
+    return success({val: undefined, rest: s});
+  });
+}
+
 // Let S be the type of your state values (also called accumulator values?);.
 // Think of A as the type of your actions on your state.
 // Then
