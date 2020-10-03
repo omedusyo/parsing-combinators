@@ -8,7 +8,7 @@ import {
 } from "../src/index";
 
 import { digit } from "./example0_digits";
-import { cCharacter } from "./example1_letters";
+import { cCharacter, character } from "./example1_letters";
 
 function assert(id, b) {
   if (b === false) {
@@ -188,4 +188,13 @@ assert("tryAll:2", tryall1.val === "c");
 const tryall2 = tryAll([]).consume("foo");
 // console.log(tryall2);
 assert("tryAll:3", ParserValue.hasFailed(tryall2));
+
+// === character ===
+const char0 = character("a").consume("abc");
+assert("character:0", char0.rest == "bc");
+assert("character:1", char0.val == "a");
+
+const char1 = character("a").consume("bc");
+// console.log(char1);
+assert("character:2", ParserValue.hasFailed(char1));
 

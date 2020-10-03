@@ -1,10 +1,10 @@
 
 // =========== CORE =============
 // A parser p of type A - written p : Parser(A) - is basically a function
-//   p : String -> (A, String) + B
+//   p : String -> (A, String) + E
 // such that it consumes a part of a string s : String to produce both
 // a value of type A and the rest of the string that was not consumed.
-// In this process of consumption it may not like what it sees and fail with a value of type B
+// In this process of consumption it may not like what it sees and fail with an error value of type E
 //
 // For example take the
 //   Num : Parser(Number)

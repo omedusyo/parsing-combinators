@@ -66,3 +66,7 @@ p.map(f)
 maximalMunch // computes the kleene star of a parser
 ```
 
+digit
+cCharacter
+character(c)
+
