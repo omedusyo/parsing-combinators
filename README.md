@@ -67,9 +67,14 @@ or
 any
 
 maximalMunch // computes the kleene star of a parser
+maximalMunchDiscard
+maximalReduce
+
+oneOf
 ```
 
 digit
 cCharacter
 character(c)
+
 

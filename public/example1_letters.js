@@ -13,7 +13,6 @@ function isChar(d) {
   // TODO
 
 }
-
 // TODO: lowercase, uppercase, case-insensitive
 
 // Parser(Char)

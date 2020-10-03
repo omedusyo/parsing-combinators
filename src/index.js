@@ -203,8 +203,9 @@ export const thens = (ps, f) => sequence(ps).map(f);
 // TODO: add bounded munches... i.e. apply a parser atmost n-times, and if it doesn't fail by n-th try, we fail
 
 // === maximalMunch ===
-// TODO: is this a good name? maximalMunchAtleast0 seems too long
+// TODO: is this a good name?
 //       kleeneStar maybe? or just star...
+//
 // Applies a parser repeatedly and collects it's values into an array
 // until the parserfails, then it succeeds with the collected values
 // this will either always suceed or loop
@@ -356,5 +357,62 @@ export function mapError(p, f) {
       return failure(f(v.message));
     }
   });
+}
+
+
+// ========== SPECIALIZED PARSERS ============
+// ===== HELPERS =====
+// Array(a), a -> Boolean
+function elemIn(xs, x) {
+  return xs.indexOf(x) !== -1;
+}
+
+// String -> Bool
+function isEmptyString(s) {
+  return s.length === 0;
+}
+
+function codeOfChar(c) {
+  return c.charCodeAt(0);
+}
+
+const charCode0 = codeOfChar("0")
+const charCode9 = codeOfChar("9")
+
+function isDigit(c) {
+  const code = codeOfChar(c);
+  return charCode0 <= code && code <= charCode9;
+}
+
+// (Char -> Bool) -> Parser(Char)
+export function satisfies(predicate) {
+  return Parser(s => {
+    if (isEmptyString(s)) {
+      return failure(undefined);
+    } else if (predicate(s[0])) {
+      return success({val: s[0], rest: s.slice(1)});
+    } else {
+      return failure(s[0]);
+    }
+  });
+}
+
+// Char -> Parser(Char)
+export function char(c0) {
+  return satisfies(c => c === c0);
+}
+
+// Parser({0, 1, ..., 9})
+export const digit = satisfies(isDigit);
+
+// Array(Char) -> Parser(Char)
+export function oneOf(xs) {
+  return satisfies(c => elemIn(xs, c));
+}
+
+// String -> Parser(String)
+export function string(s) {
+  const characters = s.split("");
+  return sequence(characters.map(char)).map(xs => xs.join(""));
 }
 

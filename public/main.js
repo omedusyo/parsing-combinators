@@ -6,6 +6,7 @@ import {
   pair, first, second, sequence, then2, thens,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
+  satisfies, string,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -227,4 +228,22 @@ assert("character:1", char0.val == "a");
 const char1 = character("a").consume("bc");
 // console.log(char1);
 assert("character:2", ParserValue.hasFailed(char1));
+
+// === satisfies ===
+const satisfies0 = satisfies(c => c == 'a').consume("axxx");
+assert("satisfies:0", satisfies0.rest == "xxx");
+assert("satisfies:1", satisfies0.val === "a");
+
+const satisfies1 = satisfies(c => c == 'a').consume("xxxx");
+// console.log(satisfies1);
+assert("satisfies:2", ParserValue.hasFailed(satisfies1));
+
+// === string ===
+const string0 = string("foo").consume("fooxbar");
+assert("string:0", string0.rest == "xbar");
+assert("string:1", string0.val === "foo");
+
+const string1 = string("").consume("xxx");
+assert("string:2", string1.rest == "xxx");
+assert("string:3", string1.val === "");
 
