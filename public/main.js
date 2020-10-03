@@ -4,9 +4,11 @@ import {
   succeed, then, first, second, map, pair,
   sequence, then2, thens,
   maximalMunch, maximalReduce,
+  try2,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
+import { cCharacter } from "./example1_letters";
 
 function assert(id, b) {
   if (b === false) {
@@ -130,4 +132,37 @@ assert(10.1, maxred0.val == 1 + 2 + 3 + 4 + 5);
 const maxred1 = maximalReduce(digit, 0, (x, y) => x + y).consume("foo");
 assert(10.2, maxred1.rest == "foo");
 assert(10.3, maxred1.val === 0);
+
+// === cCharacter ===
+const cchar0 = cCharacter.consume("c123");
+// console.log(cchar0);
+assert(11.0, cchar0.rest == "123");
+assert(11.1, cchar0.val === "c");
+
+const cchar1 = cCharacter.consume("123");
+// console.log(cchar1);
+assert(11.2, ParserValue.hasFailed(cchar1));
+
+const cchar2 = cCharacter.consume("");
+// console.log(cchar2);
+assert(11.3, ParserValue.hasFailed(cchar2));
+
+// === try2 ===
+const try2_0 = try2(digit, digit).consume("29foo");
+assert(12.0, try2_0.rest == "9foo");
+assert(12.1, try2_0.val === 2);
+
+const try2_1 = try2(digit, cCharacter).consume("cxxx");
+assert(12.2, try2_1.rest == "xxx");
+assert(12.3, try2_1.val === "c");
+
+const try2_2 = try2(digit, cCharacter).consume("xxxx");
+// console.log(try2_2);
+assert(12.4, ParserValue.hasFailed(try2_2));
+
+const try2_3 = try2(digit, cCharacter).consume("");
+console.log(try2_3);
+assert(12.5, ParserValue.hasFailed(try2_3));
+
+// TODO
 

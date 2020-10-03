@@ -13,6 +13,12 @@ conventions:
   s is a string
   a,b,c, x,y,z are regular values (as,bs,cs, xs,ys,zs are arrays of regular values)
 
+Let A be the type of a regular value, E the error type. Then
+  Parser(E; A)
+is the type of parsers with results in A and errors in E.
+We'll usually ommit the error type.
+If in a type signature of a combinator we have multiple occurrences of types of shape Parser(_) and the error type is ommited, then we may assume that the error type in all the occurrences is the same E.
+
 # Installation
 ```
 npm install https://github.com/omedusyo/parsing-combinators.git
@@ -31,6 +37,10 @@ ParserValue.succeed({val: x, rest: s})
 ParserValue.fail(msg)
 ParserValue.hasFailed(v)
 ParserValue.hasSucceeded(v)
+
+v.rest
+v.val
+v.message
 
 p.consume(s)
 

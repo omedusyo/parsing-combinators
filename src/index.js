@@ -11,6 +11,7 @@
 // that consumes
 
 // ====== PARSING RESULT VALUES ======
+// E -> Failure(E)
 function failure(msg) {
   return { hasSuceeded: false, message: msg };
 }
@@ -19,6 +20,7 @@ function hasFailed(v) {
   return !v.hasSuceeded;
 }
 
+// { rest: String, val: A } -> Success(A)
 function success({rest, val}) {
   return { hasSuceeded: true, rest, val };
 }
@@ -55,6 +57,7 @@ class _Parser {
     return map(this, f);
   }
 }
+// (String -> (Success(A) + Failure(E))) -> Parser(A)
 export function Parser(f) {
   return new _Parser(f);
 }
@@ -249,12 +252,39 @@ export function maximalReduce(p, initState, f) {
   });
 }
 
+// === TRY2 ===
+// TODO: this seems to "backtrack"
+// TODO: maybe rename this to parallel or?
+// Parser(E1; A), Parser(E2; A) -> Parser(E1 + E2; A)
+export function try2(p, q) {
+  return Parser(s => {
+    const v = p.consume(s);
+    if (hasSucceeded(v)) {
+      return v;
+    } else {
+      const w = q.consume(s); // note that this is again s and not v.rest
+      if (hasSucceeded(w)) {
+        return w;
+      } else {
+        return failure([v.message, w.message]);
+      }
+    }
+  });
+}
+
+// Array(Parser(E; A)) -> Parser(Array(E); A)
+// TODO: god-damn it, try is a reserved keyword
+export function tryAll(ps) {
+}
 
 // TODO: catch (think of chains of parsers that may fail with different kinds of messages)
 // so catch should be like a switch (case) statement
+//
+// or some sort of analogue of if-then-else?
 
 // sequential or
 // TODO: seqor
 //
 // sequential try
+// or any?
 
