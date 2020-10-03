@@ -56,6 +56,9 @@ class _Parser {
   map(f) {
     return map(this, f);
   }
+  catch(f) {
+    return ifFails(this, f);
+  }
 }
 // (String -> (Success(A) + Failure(E))) -> Parser(A)
 export function Parser(f) {
@@ -305,14 +308,25 @@ export function any(ps) {
   });
 }
 
+// === ifFails ===
+// use p.catch(f)
+//
+// Parser(A), (E -> Parser(B)) -> Parser(B)
+function ifFails(p, f) {
+  return Parser(s => {
+    const v = p.consume(s);
+    if (hasSucceeded(v)) {
+      return v;
+    } else {
+      return f(p.message).consume(s);
+    }
+  });
+}
+
+// TODO: append an error operator...
+
 // TODO: catch (think of chains of parsers that may fail with different kinds of messages)
 // so catch should be like a switch (case) statement
 //
 // or some sort of analogue of if-then-else?
-
-// sequential or
-// TODO: seqor
-//
-// sequential try
-// or any?
 

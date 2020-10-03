@@ -5,7 +5,7 @@ import {
   map,
   pair, first, second, sequence, then2, thens,
   maximalMunch, maximalReduce, maximalMunchDiscard,
-  or, any,
+  or, any, ifFails,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -176,6 +176,18 @@ assert("or:4", ParserValue.hasFailed(or_2));
 const or_3 = or(digit, cCharacter).consume("");
 // console.log(or_3);
 assert("or:5", ParserValue.hasFailed(or_3));
+
+// === ifFails/catch ===
+const iffails0 = digit.catch(msg => cCharacter).consume("cxxx");
+assert("ifFails:0", iffails0.rest == "xxx");
+assert("ifFails:1", iffails0.val === "c");
+
+const iffails1 = digit.catch(msg => cCharacter).consume("1xxx");
+assert("ifFails:2", iffails1.rest == "xxx");
+assert("ifFails:3", iffails1.val === 1);
+
+const iffails2 = digit.catch(msg => cCharacter).consume("xxx");
+assert("ifFails:3", ParserValue.hasFailed(iffails2));
 
 // === any ===
 const tryall0 = any([digit, cCharacter]).consume("xxxx");
