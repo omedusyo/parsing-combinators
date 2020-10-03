@@ -13,20 +13,20 @@
 // ====== PARSING RESULT VALUES ======
 // E -> Failure(E)
 function failure(msg) {
-  return { hasSuceeded: false, message: msg };
+  return { hasSucceeded: false, message: msg };
 }
 
 function hasFailed(v) {
-  return !v.hasSuceeded;
+  return !v.hasSucceeded;
 }
 
 // { rest: String, val: A } -> Success(A)
 function success({rest, val}) {
-  return { hasSuceeded: true, rest, val };
+  return { hasSucceeded: true, rest, val };
 }
 
 function hasSucceeded(v) {
-  return v.hasSuceeded;
+  return v.hasSucceeded;
 }
 
 export const ParserValue = {
