@@ -6,13 +6,13 @@ import {
   pair, first, second, sequence, map2, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
-  satisfies, string, end
+  satisfies, string, end,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
 import { cCharacter, character } from "./example1_letters";
 import { nat } from "./example2_numbers";
-import {  } from "./example3_arith_expressions";
+import { binexp, showbinexp } from "./example3_arith_binary_expressions";
 
 function assert(id, b) {
   if (b === false) {
@@ -282,4 +282,14 @@ assert("nat:8", ParserValue.hasFailed(nat5));
 const nat6 = nat.consume("-5");
 // console.log(nat6);
 assert("nat:9", ParserValue.hasFailed(nat6));
+
+// ====== simple binary expressions =======
+const bin_exp0 = binexp.consume("(  + ( * 3 4  ) (+ 5 6)  )");
+assert("binexp:0", ParserValue.hasSucceeded(bin_exp0));
+// console.log(bin_exp0);
+const bin_exp1_show = showbinexp(bin_exp0.val)
+// console.log(bin_exp1_show);
+assert("binexp:1", bin_exp1_show == "(+ (* 3 4) (+ 5 6))")
+
+// console.log(show(v.val));
 
