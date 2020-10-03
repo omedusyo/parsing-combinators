@@ -275,6 +275,18 @@ export function try2(p, q) {
 // Array(Parser(E; A)) -> Parser(Array(E); A)
 // TODO: god-damn it, try is a reserved keyword
 export function tryAll(ps) {
+  return Parser(s => {
+    const errors = [];
+    for (let i = 0; i < ps.length; i++) {
+      const v = ps[i].consume(s);
+      if (hasSucceeded(v)) {
+        return v;
+      } else {
+        errors.push(v.message);
+      }
+    }
+    return failure(errors);
+  });
 }
 
 // TODO: catch (think of chains of parsers that may fail with different kinds of messages)

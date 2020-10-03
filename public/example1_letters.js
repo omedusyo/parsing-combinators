@@ -20,7 +20,7 @@ function isChar(d) {
 export const cCharacter = Parser(s => {
   if (isEmptyString(s)) {
     return ParserValue.failure("Expected a 'c' character instead of empty string");
-  } else if (s[0] == "c"){
+  } else if (s[0] == "c") {
     return ParserValue.success({val: "c", rest: s.slice(1)});
   } else {
     return ParserValue.failure(`Expected a 'c' character instead of '${s[0]}'`);

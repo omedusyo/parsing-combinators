@@ -4,7 +4,7 @@ import {
   succeed, then, first, second, map, pair,
   sequence, then2, thens,
   maximalMunch, maximalReduce,
-  try2,
+  try2, tryAll
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -161,8 +161,19 @@ const try2_2 = try2(digit, cCharacter).consume("xxxx");
 assert(12.4, ParserValue.hasFailed(try2_2));
 
 const try2_3 = try2(digit, cCharacter).consume("");
-console.log(try2_3);
+// console.log(try2_3);
 assert(12.5, ParserValue.hasFailed(try2_3));
 
-// TODO
+// === tryAll ===
+const tryall0 = tryAll([digit, cCharacter]).consume("xxxx");
+// console.log(tryall0);
+assert(13.0, ParserValue.hasFailed(tryall0));
+
+const tryall1 = tryAll([digit, cCharacter]).consume("cxxx");
+assert(13.1, tryall1.rest == "xxx");
+assert(13.2, tryall1.val === "c");
+
+const tryall2 = tryAll([]).consume("foo");
+console.log(tryall2);
+assert(13.3, ParserValue.hasFailed(tryall2));
 
