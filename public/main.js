@@ -6,7 +6,7 @@ import {
   pair, first, second, sequence, map2, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
-  satisfies, string,
+  satisfies, string, end
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -249,6 +249,10 @@ const string1 = string("").consume("xxx");
 assert("string:2", string1.rest == "xxx");
 assert("string:3", string1.val === "");
 
+// === end ===
+const end0 = end.consume("");
+assert("end:0", end0.rest == "");
+assert("end:1", end0.val === "");
 
 // === nat ===
 const nat0 = nat.consume("123xxx");

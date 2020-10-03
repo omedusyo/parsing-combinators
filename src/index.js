@@ -421,3 +421,13 @@ export function string(s) {
   return maps(characters.map(char), xs => xs.join(""));
 }
 
+// === end ===
+// Parser({""})
+export const end = Parser(s => {
+  if (s === "") {
+    return success({val: "", rest: s});
+  } else {
+    return failure(s);
+  }
+});
+
