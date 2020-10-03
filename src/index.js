@@ -59,6 +59,12 @@ class _Parser {
   catch(f) {
     return ifFails(this, f);
   }
+  setError(e) {
+    return setError(this, e);
+  }
+  mapError(f) {
+    return mapError(this, f);
+  }
 }
 // (String -> (Success(A) + Failure(E))) -> Parser(A)
 export function Parser(f) {
@@ -311,8 +317,9 @@ export function any(ps) {
 // === ifFails ===
 // use p.catch(f)
 //
-// Parser(A), (E -> Parser(B)) -> Parser(B)
-function ifFails(p, f) {
+// this is like an analogue of then but for errors
+// Parser(E1; A), (E1 -> Parser(E2; A)) -> Parser(E2; A)
+export function ifFails(p, f) {
   return Parser(s => {
     const v = p.consume(s);
     if (hasSucceeded(v)) {
@@ -323,10 +330,31 @@ function ifFails(p, f) {
   });
 }
 
-// TODO: append an error operator...
+// use p.setError(e)
+// this is like the unit, but for the errors
+// Parser(E1; A), E2 -> Parser(E2; A)
+export function setError(p, e) {
+  return Parser(s => {
+    const v = p.consume(s);
+    if (hasSucceeded(v)) {
+      return v;
+    } else {
+      return failure(e);
+    }
+  });
+}
 
-// TODO: catch (think of chains of parsers that may fail with different kinds of messages)
-// so catch should be like a switch (case) statement
-//
-// or some sort of analogue of if-then-else?
+// use p.mapError(f)
+// this is like the map, but for the errors
+// Parser(E;
+export function mapError(p, f) {
+  return Parser(s => {
+    const v = p.consume(s);
+    if (hasSucceeded(v)) {
+      return v;
+    } else {
+      return failure(f(v.message));
+    }
+  });
+}
 

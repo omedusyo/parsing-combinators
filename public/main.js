@@ -5,7 +5,7 @@ import {
   map,
   pair, first, second, sequence, then2, thens,
   maximalMunch, maximalReduce, maximalMunchDiscard,
-  or, any, ifFails,
+  or, any, ifFails, setError, mapError,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -188,6 +188,23 @@ assert("ifFails:3", iffails1.val === 1);
 
 const iffails2 = digit.catch(msg => cCharacter).consume("xxx");
 assert("ifFails:3", ParserValue.hasFailed(iffails2));
+
+// === setError ===
+const seterror0 = digit.setError("meaningful error!").consume("1xxx");
+assert("setError:0", seterror0.rest == "xxx");
+assert("setError:1", seterror0.val === 1);
+
+const seterror1 = digit.setError("meaningful error!").consume("xxx");
+assert("setError:2", seterror1.message == "meaningful error!");
+
+// === mapError ===
+const maperror0 = digit.mapError(msg => msg + " & my meaningful error!").consume("1xxx");
+assert("maperror:0", maperror0.rest == "xxx");
+assert("maperror:1", maperror0.val === 1);
+
+const maperror1 = digit.mapError(msg => msg + " & my meaningful error!").consume("xxx");
+// console.log(maperror1);
+assert("maperror:2", ParserValue.hasFailed(maperror1));
 
 // === any ===
 const tryall0 = any([digit, cCharacter]).consume("xxxx");
