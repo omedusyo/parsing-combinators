@@ -199,7 +199,7 @@ export const then4 = (p1, p2, p3, p4, f) => sequence([p1, p2, p3, p4]).map(([x1,
 export const thens = (ps, f) => sequence(ps).map(f);
 
 
-// ===== ADVANCED (POSSIBLE PARALLEL (?) OR NON-TERMINATING) STRUCTURE =====
+// ===== ADVANCED (POSSIBLY PARALLEL (?) OR NON-TERMINATING) STRUCTURE =====
 // TODO: add bounded munches... i.e. apply a parser atmost n-times, and if it doesn't fail by n-th try, we fail
 
 // === maximalMunch ===
