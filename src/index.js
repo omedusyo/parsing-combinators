@@ -269,11 +269,11 @@ export function maximalReduce(p, initState, f) {
   });
 }
 
-// === TRY2 ===
+// === OR ===
 // TODO: this seems to "backtrack"
 // TODO: maybe rename this to parallel or?
 // Parser(E1; A), Parser(E2; A) -> Parser(E1 + E2; A)
-export function try2(p, q) {
+export function or(p, q) {
   return Parser(s => {
     const v = p.consume(s);
     if (hasSucceeded(v)) {
@@ -290,8 +290,7 @@ export function try2(p, q) {
 }
 
 // Array(Parser(E; A)) -> Parser(Array(E); A)
-// TODO: god-damn it, try is a reserved keyword
-export function tryAll(ps) {
+export function any(ps) {
   return Parser(s => {
     const errors = [];
     for (let i = 0; i < ps.length; i++) {

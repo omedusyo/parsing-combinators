@@ -63,6 +63,9 @@ p._then(q)
 map(p, f)
 p.map(f)
 
+or
+any
+
 maximalMunch // computes the kleene star of a parser
 ```
 

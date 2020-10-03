@@ -1,10 +1,11 @@
 
 import {
   ParserValue,
-  succeed, then, first, second, map, pair,
-  sequence, then2, thens,
+  succeed, then,
+  map,
+  pair, first, second, sequence, then2, thens,
   maximalMunch, maximalReduce, maximalMunchDiscard,
-  try2, tryAll
+  or, any,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -159,35 +160,35 @@ const cchar2 = cCharacter.consume("");
 // console.log(cchar2);
 assert("cCharacter:3", ParserValue.hasFailed(cchar2));
 
-// === try2 ===
-const try2_0 = try2(digit, digit).consume("29foo");
-assert("try2:0", try2_0.rest == "9foo");
-assert("try2:1", try2_0.val === 2);
+// === or ===
+const or_0 = or(digit, digit).consume("29foo");
+assert("or:0", or_0.rest == "9foo");
+assert("or:1", or_0.val === 2);
 
-const try2_1 = try2(digit, cCharacter).consume("cxxx");
-assert("try2:2", try2_1.rest == "xxx");
-assert("try2:3", try2_1.val === "c");
+const or_1 = or(digit, cCharacter).consume("cxxx");
+assert("or:2", or_1.rest == "xxx");
+assert("or:3", or_1.val === "c");
 
-const try2_2 = try2(digit, cCharacter).consume("xxxx");
-// console.log(try2_2);
-assert("try2:4", ParserValue.hasFailed(try2_2));
+const or_2 = or(digit, cCharacter).consume("xxxx");
+// console.log(or_2);
+assert("or:4", ParserValue.hasFailed(or_2));
 
-const try2_3 = try2(digit, cCharacter).consume("");
-// console.log(try2_3);
-assert("try2:5", ParserValue.hasFailed(try2_3));
+const or_3 = or(digit, cCharacter).consume("");
+// console.log(or_3);
+assert("or:5", ParserValue.hasFailed(or_3));
 
-// === tryAll ===
-const tryall0 = tryAll([digit, cCharacter]).consume("xxxx");
+// === any ===
+const tryall0 = any([digit, cCharacter]).consume("xxxx");
 // console.log(tryall0);
-assert("tryAll:0", ParserValue.hasFailed(tryall0));
+assert("any:0", ParserValue.hasFailed(tryall0));
 
-const tryall1 = tryAll([digit, cCharacter]).consume("cxxx");
-assert("tryAll:1", tryall1.rest == "xxx");
-assert("tryAll:2", tryall1.val === "c");
+const tryall1 = any([digit, cCharacter]).consume("cxxx");
+assert("any:1", tryall1.rest == "xxx");
+assert("any:2", tryall1.val === "c");
 
-const tryall2 = tryAll([]).consume("foo");
+const tryall2 = any([]).consume("foo");
 // console.log(tryall2);
-assert("tryAll:3", ParserValue.hasFailed(tryall2));
+assert("any:3", ParserValue.hasFailed(tryall2));
 
 // === character ===
 const char0 = character("a").consume("abc");
