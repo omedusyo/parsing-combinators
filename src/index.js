@@ -189,11 +189,11 @@ export function sequence(ps) {
 // === THEN2, THEN3, THEN4 ===
 //
 // Parser(A), Parser(B), (A, B -> C) -> Parser(C)
-export const then2 = (p, q, f) => pair(p, q).map(([x, y]) => f(x, y));
+export const map2 = (p, q, f) => pair(p, q).map(([x, y]) => f(x, y));
 // Parser(A), Parser(B), Parser(C), (A, B, C -> D) -> Parser(D)
-export const then3 = (p, q, r, f) => sequence([p, q, r]).map(([x, y, z]) => f(x, y, z));
+export const map3 = (p, q, r, f) => sequence([p, q, r]).map(([x, y, z]) => f(x, y, z));
 // Parser(A1), Parser(A2), Parser(A3), Parser(A4), (A1, A2, A3, A4 -> B) -> Parser(B)
-export const then4 = (p1, p2, p3, p4, f) => sequence([p1, p2, p3, p4]).map(([x1, x2, x3, x4]) => f(x1, x2, x3, x4));
+export const map4 = (p1, p2, p3, p4, f) => sequence([p1, p2, p3, p4]).map(([x1, x2, x3, x4]) => f(x1, x2, x3, x4));
 
 // Array(Parser(A)), (Array(A) -> B) -> Parser(B)
 export const maps = (ps, f) => sequence(ps).map(f);

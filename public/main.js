@@ -3,7 +3,7 @@ import {
   ParserValue,
   succeed, then,
   map,
-  pair, first, second, sequence, then2, maps,
+  pair, first, second, sequence, map2, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
   satisfies, string,
@@ -109,10 +109,10 @@ const seq1 = sequence([]).consume("watev");
 assert("sequence:2", seq1.rest == "watev");
 assert("sequence:3", arrayEq(seq1.val, []));
 
-// === THEN2 ===
-const then2_0 = then2(digit, digit, (x, y) => x + y).consume("45foo");
-assert("then2:0", then2_0.rest == "foo");
-assert("then2:1", then2_0.val === 4 + 5);
+// === MAP2 ===
+const map2_0 = map2(digit, digit, (x, y) => x + y).consume("45foo");
+assert("map2:0", map2_0.rest == "foo");
+assert("map2:1", map2_0.val === 4 + 5);
 
 // === MAPS ===
 const sum = xs => xs.reduce((x, y) => x + y, 0);
