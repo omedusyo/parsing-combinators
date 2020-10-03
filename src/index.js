@@ -196,7 +196,7 @@ export const then3 = (p, q, r, f) => sequence([p, q, r]).map(([x, y, z]) => f(x,
 export const then4 = (p1, p2, p3, p4, f) => sequence([p1, p2, p3, p4]).map(([x1, x2, x3, x4]) => f(x1, x2, x3, x4));
 
 // Array(Parser(A)), (Array(A) -> B) -> Parser(B)
-export const thens = (ps, f) => sequence(ps).map(f);
+export const maps = (ps, f) => sequence(ps).map(f);
 
 
 // ===== ADVANCED (POSSIBLY PARALLEL (?) OR NON-TERMINATING) STRUCTURE =====
@@ -415,8 +415,8 @@ export function string(s) {
   // "foo"
   // ~~split~~> ["f","o","o"]
   // ~~map~~> [char("f"), char("o"), char("o")]
-  // ~~thens~~> ...
+  // ~~maps~~> ...
   const characters = s.split("");
-  return thens(characters.map(char), xs => xs.join(""));
+  return maps(characters.map(char), xs => xs.join(""));
 }
 

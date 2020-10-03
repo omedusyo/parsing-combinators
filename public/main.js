@@ -3,7 +3,7 @@ import {
   ParserValue,
   succeed, then,
   map,
-  pair, first, second, sequence, then2, thens,
+  pair, first, second, sequence, then2, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
   satisfies, string,
@@ -12,6 +12,7 @@ import {
 import { digit } from "./example0_digits";
 import { cCharacter, character } from "./example1_letters";
 import { nat } from "./example2_numbers";
+import {  } from "./example3_arith_expressions";
 
 function assert(id, b) {
   if (b === false) {
@@ -113,12 +114,12 @@ const then2_0 = then2(digit, digit, (x, y) => x + y).consume("45foo");
 assert("then2:0", then2_0.rest == "foo");
 assert("then2:1", then2_0.val === 4 + 5);
 
-// === THENS ===
+// === MAPS ===
 const sum = xs => xs.reduce((x, y) => x + y, 0);
-const thens0 = thens([digit,digit,digit,digit,digit], sum).consume("12345foo");
-// console.log(thens0);
-assert("thens:0", thens0.rest == "foo");
-assert("thens:1", thens0.val === 1 + 2 + 3 + 4 + 5);
+const maps0 = maps([digit,digit,digit,digit,digit], sum).consume("12345foo");
+// console.log(maps0);
+assert("maps:0", maps0.rest == "foo");
+assert("maps:1", maps0.val === 1 + 2 + 3 + 4 + 5);
 
 // === maximalMunch ===
 const max0 = maximalMunch(digit).consume("1234foo");
