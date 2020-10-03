@@ -412,7 +412,11 @@ export function oneOf(xs) {
 
 // String -> Parser(String)
 export function string(s) {
+  // "foo"
+  // ~~split~~> ["f","o","o"]
+  // ~~map~~> [char("f"), char("o"), char("o")]
+  // ~~thens~~> ...
   const characters = s.split("");
-  return sequence(characters.map(char)).map(xs => xs.join(""));
+  return thens(characters.map(char), xs => xs.join(""));
 }
 
