@@ -348,7 +348,7 @@ export function setError(p, e) {
 
 // use p.mapError(f)
 // this is like the map, but for the errors
-// Parser(E;
+// Parser(E1; A), (E1 -> E2) -> Parser(E2; A)
 export function mapError(p, f) {
   return Parser(s => {
     const v = p.consume(s);

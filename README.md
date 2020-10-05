@@ -223,7 +223,6 @@ string : String -> Parser(String)
 string(s)
 ```
 ```
-Parser({""})
-end
+end : Parser({""})
 ```
 
