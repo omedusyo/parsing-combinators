@@ -211,7 +211,7 @@ satisfies(test)
 
 ```
 char : Char -> Parser(Char)
-char
+char(c)
 ```
 
 ```
