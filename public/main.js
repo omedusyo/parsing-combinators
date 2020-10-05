@@ -13,6 +13,7 @@ import { digit } from "./example0_digits";
 import { cCharacter, character } from "./example1_letters";
 import { nat } from "./example2_numbers";
 import { binexp, showbinexp } from "./example3_arith_binary_expressions";
+import {  } from "./example4_arith_expressions";
 
 function assert(id, b) {
   if (b === false) {
@@ -93,6 +94,12 @@ const pair0 = pair(digit, digit).consume("12foo");
 assert("pair:0", pair0.rest == "foo");
 assert("pair:1", arrayEq(pair0.val, [1,2]));
 // console.log(pair(digit, digit).consume("a2foo"));
+
+const pair1 = pair(digit, digit).consume("1foo");
+assert("pair:2", ParserValue.hasFailed(pair1));
+
+const pair2 = pair(digit, digit).consume("x2foo");
+assert("pair:3", ParserValue.hasFailed(pair2));
 
 // === THEN ===
 const then0parser = digit.then(n => digit.map(m => n + m));

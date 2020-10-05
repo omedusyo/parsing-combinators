@@ -160,7 +160,11 @@ export function pair(p, q) {
     const v = p.consume(s);
     if (hasSucceeded(v)) {
       const w = q.consume(v.rest);
-      return success({val: [v.val, w.val], rest: w.rest});
+      if (hasSucceeded(w)) {
+        return success({val: [v.val, w.val], rest: w.rest});
+      } else {
+        return w;
+      }
     } else {
       return v;
     }
