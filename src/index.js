@@ -238,6 +238,11 @@ export function maximalMunch(p) {
   });
 }
 
+export function maximalMunch1(p) {
+  return pair(p, maximalMunch(p)).map(([x, xs]) => [x, ...xs]);
+}
+
+
 // like maximalMunch, but doesn't keep track of values in an array
 // Parser(A) -> Parser({undefined})
 export function maximalMunchDiscard(p) {
