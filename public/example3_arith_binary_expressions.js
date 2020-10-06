@@ -1,5 +1,5 @@
 
-import { Parser, maximalMunchDiscard, or, char, maps } from "../src/index";
+import { Rec, maximalMunchDiscard, or, char, maps } from "../src/index";
 import { nat } from "./example2_numbers";
 
 // Nat(1)
@@ -69,8 +69,9 @@ const natExp = nat.map(n => Nat(n)); // nat.map(Nat)
 //
 // this is like or(natExp, opExp) and the indirection is here because
 // opExp depends on exp and exp depends on opExp
-const exp = Parser(s =>
-  or(natExp, opExp).consume(s)
+
+const exp = Rec(() =>
+  or(natExp, opExp)
 );
 
 // (_+__exp__exp_)

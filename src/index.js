@@ -71,6 +71,12 @@ export function Parser(f) {
   return new _Parser(f);
 }
 
+// Use this for recursive definitions
+export function Rec(f) {
+  return Parser(s => 
+    f().consume(s)
+  );
+}
 // ======== PARSING COMBINATORS =========
 
 // ===== BASIC MONAD STRUCTURE =====
