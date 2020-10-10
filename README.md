@@ -134,6 +134,14 @@ pair : Pair(A), Pair(B) -> Pair([A, B])
 pair(p, q)
 ```
 
+`repeat` is basically an analogue of the for loop as opposed to the while loop
+i.e. ahead of time bounded iteration as opposed to unbounded iteration.
+Also denoted `p^n` (`n`-th power of `p`)
+```
+repeat : Parser(A), Nat -> Parser(Array(n; A))
+repeat(p, n)
+```
+
 ```
 sequence : Array(Parser(A)) -> Parser(Array(A))
 sequence(ps)

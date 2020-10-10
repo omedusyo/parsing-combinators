@@ -177,6 +177,29 @@ export function pair(p, q) {
   });
 }
 
+// === REPEAT ===
+// this is basically an analogue of the for loop as opposed to the while loop
+// i.e. ahead of time bounded iteration as opposed to unbounded iteration.
+// Also denoted p^n (n-th power of p)
+//
+// Parser(A), Nat -> Parser(Array(n; A))
+export function repeat(p, n) {
+  return Parser(s => {
+    const xs = [];
+    let v;
+    for (let i = 0; i < n; i++) {
+      v = p.consume(s);
+      s = v.rest;
+      if (hasSucceeded(v)) {
+        xs.push(v.val);
+      } else {
+        return failure(v.message);
+      }
+    }
+    return success({val: xs, rest: s});
+  });
+}
+
 // === SEQUENCE ===
 // Array(Parser(A)) -> Parser(Array(A))
 export function sequence(ps) {

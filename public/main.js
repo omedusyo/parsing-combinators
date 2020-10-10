@@ -3,7 +3,8 @@ import {
   ParserValue,
   succeed, then,
   map,
-  pair, first, second, sequence, map2, maps,
+  pair, first, second, map2,
+  repeat, repeatReduce, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
   satisfies, string, end, take,
@@ -14,6 +15,7 @@ import { cCharacter, character } from "./example1_letters";
 import { nat } from "./example2_numbers";
 import { binexp, showbinexp } from "./example3_arith_binary_expressions";
 import {  } from "./example4_arith_expressions";
+import {  } from "./example5_balanced_parens";
 
 function assert(id, b) {
   if (b === false) {
@@ -106,6 +108,23 @@ const then0parser = digit.then(n => digit.map(m => n + m));
 const then0 = then0parser.consume("12hi");
 assert("then:0", then0.rest == "hi");
 assert("then:1", then0.val == 3);
+
+// === REPEAT ===
+const repeat0 = repeat(digit, 3).consume("214xxx");
+assert("repeat:0", repeat0.rest = "xxx");
+assert("repeat:1", arrayEq(repeat0.val, [2,1,4]));
+
+const repeat1 = repeat(digit, 3).consume("21467xxx");
+assert("repeat:2", repeat1.rest = "67xxx");
+assert("repeat:3", arrayEq(repeat1.val, [2,1,4]));
+
+const repeat2 = repeat(digit, 0).consume("21467xxx");
+assert("repeat:4", repeat2.rest = "21467xxx");
+assert("repeat:5", arrayEq(repeat2.val, []));
+
+const repeat3 = repeat(digit, 3).consume("21xxx");
+assert("repeat:6", ParserValue.hasFailed(repeat3));
+// console.log(repeat3);
 
 // === SEQUENCE ===
 const seq0 = sequence([digit, digit, digit]).consume("123foo");
