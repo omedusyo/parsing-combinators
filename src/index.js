@@ -446,3 +446,18 @@ export const end = Parser(s => {
   }
 });
 
+// take(3) consumes first 3 characters of the input string, and returns them as the result
+// in case the input string is less than 3 characters, it fails with the length of the input string
+//
+// Nat -> Parser(String)
+export function take(N) {
+  return Parser(s => {
+    const strn = s.length;
+    if (strn >= N) {
+      return success({val: s.slice(0, N), rest: s.slice(N)});
+    } else {
+      return failure(strn);
+    }
+  });
+}
+

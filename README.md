@@ -7,6 +7,8 @@ TODO: conceptually we don't parse finite strings -
 TODO
 parsers have very nice imperative feel
 
+Rec, maximalMunch1
+
 
 # Installation
 ```
@@ -224,5 +226,12 @@ string(s)
 ```
 ```
 end : Parser({""})
+```
+
+take(3) consumes first 3 characters of the input string, and returns them as the result
+in case the input string is less than 3 characters, it fails with the length of the input string
+```
+take : Nat -> Parser(String)
+take(N)
 ```
 

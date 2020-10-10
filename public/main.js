@@ -6,7 +6,7 @@ import {
   pair, first, second, sequence, map2, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
-  satisfies, string, end,
+  satisfies, string, end, take,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -261,6 +261,20 @@ const end0 = end.consume("");
 assert("end:0", end0.rest == "");
 assert("end:1", end0.val === "");
 
+// === take ===
+const take0 = take(3).consume("hello world");
+assert("take:0", take0.rest == "lo world");
+assert("take:1", take0.val === "hel");
+
+const take1 = take(0).consume("hello world");
+assert("take:2", take1.rest == "hello world");
+assert("take:3", take1.val === "");
+
+const take2 = take(3).consume("h");
+assert("take:4", ParserValue.hasFailed(take2));
+assert("take:5", take2.message === 1);
+
+
 // === nat ===
 const nat0 = nat.consume("123xxx");
 assert("nat:0", nat0.rest == "xxx");
@@ -294,9 +308,9 @@ assert("nat:9", ParserValue.hasFailed(nat6));
 const bin_exp0 = binexp.consume("(  + ( * 3 4  ) (+ 5 6)  )");
 assert("binexp:0", ParserValue.hasSucceeded(bin_exp0));
 // console.log(bin_exp0);
-const bin_exp1_show = showbinexp(bin_exp0.val)
+const bin_exp1_show = showbinexp(bin_exp0.val);
 // console.log(bin_exp1_show);
-assert("binexp:1", bin_exp1_show == "(+ (* 3 4) (+ 5 6))")
+assert("binexp:1", bin_exp1_show == "(+ (* 3 4) (+ 5 6))");
 
 // console.log(show(v.val));
 
