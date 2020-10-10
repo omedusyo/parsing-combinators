@@ -4,7 +4,7 @@ import {
   succeed, then,
   map,
   pair, first, second, map2,
-  repeat, repeatReduce, sequence, maps,
+  repeat, forEach, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, ifFails, setError, mapError,
   satisfies, string, end, take,
@@ -125,6 +125,23 @@ assert("repeat:5", arrayEq(repeat2.val, []));
 const repeat3 = repeat(digit, 3).consume("21xxx");
 assert("repeat:6", ParserValue.hasFailed(repeat3));
 // console.log(repeat3);
+
+// === FOREACH ===
+const foreach0p = forEach(digit, 5, 0, (d, state, i) => {
+  const newState = state + d*10**(4 - i);
+  return newState;
+});
+const foreach0 = foreach0p.consume("12345x");
+assert("foreach:0", foreach0.rest == "x");
+assert("foreach:1", foreach0.val == 12345);
+
+const foreach1 = foreach0p.consume("12345999x");
+assert("foreach:2", foreach1.rest == "999x");
+assert("foreach:3", foreach1.val == 12345);
+
+const foreach2 = foreach0p.consume("123xx");
+assert("foreach:4", ParserValue.hasFailed(foreach2));
+// console.log(foreach2);
 
 // === SEQUENCE ===
 const seq0 = sequence([digit, digit, digit]).consume("123foo");

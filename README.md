@@ -143,6 +143,14 @@ repeat(p, n)
 ```
 
 ```
+forEach : Parser(A), Nat, State, ((A, State, Nat) -> State) -> Parser(State)
+forEach(p, n, initState, (a, state, i) => {
+  ...
+  return newState;
+})
+```
+
+```
 sequence : Array(Parser(A)) -> Parser(Array(A))
 sequence(ps)
 ```

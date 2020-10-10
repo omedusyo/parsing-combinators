@@ -200,6 +200,24 @@ export function repeat(p, n) {
   });
 }
 
+// Parser(A), Nat, State, ((A, State, Nat) -> State) -> Parser(State)
+export function forEach(p, n, initState, f) {
+  return Parser(s => {
+    let v;
+    let state = initState;
+    for (let i = 0; i < n; i++) { 
+      v = p.consume(s);
+      s = v.rest;
+      if (hasSucceeded(v)) {
+        state = f(v.val, state, i);
+      } else {
+        return failure(v.message);
+      }
+    }
+    return success({val: state, rest: s});
+  });
+}
+
 // === SEQUENCE ===
 // Array(Parser(A)) -> Parser(Array(A))
 export function sequence(ps) {
