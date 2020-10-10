@@ -168,6 +168,13 @@ any : Array(Parser(E; A)) -> Parser(Array(E); A)
 any(ps)
 ```
 
+if `p` succeeds, then `maybe(p)` succeeds with the same result
+but if `p` fails, then `maybe(p)` succeeds with undefined
+```
+maybe : Parser(A) -> Parser(A + { undefined })
+maybe(p)
+```
+
 ```
 ifFails : Parser(E1; A), (E1 -> Parser(E2; A)) -> Parser(E2; A)
 ifFails(p, f)

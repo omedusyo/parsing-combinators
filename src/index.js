@@ -356,6 +356,7 @@ export function or(p, q) {
   });
 }
 
+
 // Array(Parser(E; A)) -> Parser(Array(E); A)
 export function any(ps) {
   return Parser(s => {
@@ -370,6 +371,13 @@ export function any(ps) {
     }
     return failure(errors);
   });
+}
+
+// if p succeeds, then maybe(p) succeeds with the same result
+// but if p fails, then maybe(p) succeeds with undefined
+// Parser(A) -> Parser(A + { undefined })
+export function maybe(p) {
+  return or(p, succeed(undefined));
 }
 
 // === ifFails ===

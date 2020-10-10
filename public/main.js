@@ -6,7 +6,7 @@ import {
   pair, first, second, map2,
   repeat, forEach, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
-  or, any, ifFails, setError, mapError,
+  or, any, maybe, ifFails, setError, mapError,
   satisfies, string, end, take,
 } from "../src/index";
 
@@ -15,7 +15,9 @@ import { cCharacter, character } from "./example1_letters";
 import { nat } from "./example2_numbers";
 import { binexp, showbinexp } from "./example3_arith_binary_expressions";
 import {  } from "./example4_arith_expressions";
-import {  } from "./example5_balanced_parens";
+import {  } from "./example5_balanced_paren";
+import {  } from "./example6_balanced_parens";
+import {  } from "./example7_palindroms";
 
 function assert(id, b) {
   if (b === false) {
@@ -222,6 +224,15 @@ assert("or:4", ParserValue.hasFailed(or_2));
 const or_3 = or(digit, cCharacter).consume("");
 // console.log(or_3);
 assert("or:5", ParserValue.hasFailed(or_3));
+
+// === MAYBE ===
+const maybe0 = maybe(digit).consume("0xx");
+assert("maybe:0", maybe0.rest == "xx");
+assert("maybe:1", maybe0.val === 0);
+
+const maybe1 = maybe(digit).consume("fxx");
+assert("maybe:2", maybe1.rest == "fxx");
+assert("maybe:3", maybe1.val === undefined);
 
 // === ifFails/catch ===
 const iffails0 = digit.catch(msg => cCharacter).consume("cxxx");
