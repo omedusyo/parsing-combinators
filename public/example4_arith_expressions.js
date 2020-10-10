@@ -180,17 +180,17 @@ inputs.forEach(s => {
   }
 });
 
-output.forEach(({succeeded, input, interpretation, result}) => {
-  if (succeeded) {
-    console.log("_______________");
-    console.log(`input : "${input}"`);
-    console.log(`interp: ${interpretation}`);
-    console.log(`result: ${result}`);
-    console.log("_______________");
-  } else {
-    console.log("______FAIL_____");
-    console.log("______FAIL_____");
-  }
-});
-console.log(output);
+// output.forEach(({succeeded, input, interpretation, result}) => {
+//   if (succeeded) {
+//     console.log("_______________");
+//     console.log(`input : "${input}"`);
+//     console.log(`interp: ${interpretation}`);
+//     console.log(`result: ${result}`);
+//     console.log("_______________");
+//   } else {
+//     console.log("______FAIL_____");
+//     console.log("______FAIL_____");
+//   }
+// });
+// console.log(output);
 
