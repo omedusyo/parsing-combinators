@@ -176,6 +176,33 @@ maybe(p)
 ```
 
 ```
+lookahead : Parser(A) -> Parser(ParserValue(A))
+lookahead(p)
+lookahead(p).then(v => {
+  if (ParserValue.hasSucceeded(v)) {
+    ...
+    return q;
+  } else {
+    ...
+    return r;
+  }
+});
+```
+
+```
+lookaheadSwitch : Parser(E; A), (A -> Parser(B)), (E -> Parser(B)) -> Parser(B)
+p.cond(f, g)
+p.cond(a => {
+  ...
+  return q;
+}, e => {
+  ...
+  return r;
+})
+```
+
+
+```
 ifFails : Parser(E1; A), (E1 -> Parser(E2; A)) -> Parser(E2; A)
 ifFails(p, f)
 p.catch(f)

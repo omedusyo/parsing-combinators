@@ -7,7 +7,7 @@ import {
   repeat, forEach, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, maybe, ifFails, setError, mapError,
-  satisfies, string, end, take,
+  satisfies, string, end, take, lookahead,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -233,6 +233,25 @@ assert("maybe:1", maybe0.val === 0);
 const maybe1 = maybe(digit).consume("fxx");
 assert("maybe:2", maybe1.rest == "fxx");
 assert("maybe:3", maybe1.val === undefined);
+
+// === LOOKAHEAD ===
+const lookahead0 = lookahead(digit).consume("1xxx");
+assert("lookahead:0", lookahead0.rest == "1xxx");
+assert("lookahead:1", lookahead0.val.val === 1);
+assert("lookahead:2", lookahead0.val.rest == "xxx");
+
+const lookahead1 = lookahead(digit).consume("xxx");
+assert("lookahead:3", lookahead1.rest == "xxx");
+assert("lookahead:4", ParserValue.hasFailed(lookahead1.val));
+
+// === LOOKAHEADSWITCH/COND ===
+const cond0 = digit.cond(x => succeed(x + 1), e => succeed(0)).consume("1xxx");
+assert("cond:0", cond0.rest == "1xxx");
+assert("cond:1", cond0.val === 2);
+
+const cond1 = digit.cond(x => succeed(x + 1), e => succeed(0)).consume("xxx");
+assert("cond:2", cond1.rest == "xxx");
+assert("cond:3", cond1.val === 0);
 
 // === ifFails/catch ===
 const iffails0 = digit.catch(msg => cCharacter).consume("cxxx");

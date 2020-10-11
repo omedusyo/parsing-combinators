@@ -65,6 +65,9 @@ class _Parser {
   mapError(f) {
     return mapError(this, f);
   }
+  cond(onSuccess, onFailure) {
+    return lookaheadSwitch(this, onSuccess, onFailure);
+  }
 }
 // (String -> (Success(A) + Failure(E))) -> Parser(A)
 export function Parser(f) {
@@ -380,6 +383,43 @@ export function maybe(p) {
   return or(p, succeed(undefined));
 }
 
+// === LOOKAHEAD ===
+// lookahead(p).then(v => {
+//   if (ParserValue.hasSucceeded(v)) {
+//     return ...
+//   } else {
+//     return ...
+//   }
+// });
+// Parser(A) -> Parser(ParserValue(A))
+export function lookahead(p) {
+  return Parser(s => {
+    const v = p.consume(s);
+    return success({val: v, rest: s});
+  });
+}
+
+// this is like: look ahead into the future, and then do if-then-else based on success or failure...
+// then proceed to a new timeline
+// Parser(E; A), (A -> Parser(B)), (E -> Parser(B)) -> Parser(B)
+// lookaheadSwitch(p, a => {
+//   ...
+//   return p;
+// }, e => {
+//   ...
+//   return q;
+// })
+export function lookaheadSwitch(p, onSuccess, onFailure) {
+  return Parser(s => {
+    const v = p.consume(s);
+    if (hasSucceeded(v)) {
+      return onSuccess(v.val).consume(s);
+    } else {
+      return onFailure(v.message).consume(s);
+    }
+  });
+}
+
 // === ifFails ===
 // use p.catch(f)
 //
@@ -509,4 +549,6 @@ export function take(N) {
     }
   });
 }
+
+
 
