@@ -267,6 +267,11 @@ char(c)
 ```
 
 ```
+oneOf : Array(Char) -> Parser(Char)
+oneOf(s)
+```
+
+```
 digit : Parser({0, 1, ..., 9})
 ```
 
