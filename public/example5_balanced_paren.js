@@ -1,5 +1,5 @@
 
-import { Rec, maximalReduce, succeed, fail, or, char, end, ParserValue } from "../src/index";
+import { maximalReduce, succeed, fail, char } from "../src/index";
 
 //
 // consider the language consisting of
