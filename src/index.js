@@ -515,6 +515,16 @@ export function oneOf(xs) {
   return satisfies(c => elemIn(xs, c));
 }
 
+// Char, Char -> Parser(Char)
+export function range(a, c) {
+  const x = codeOfChar(a);
+  const z = codeOfChar(c);
+  return satisfies(b => {
+    const y = codeOfChar(b);
+    return x <= y && y <= z;
+  });
+}
+
 // String -> Parser(String)
 export function string(s) {
   // "foo"

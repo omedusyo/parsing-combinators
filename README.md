@@ -267,6 +267,11 @@ char(c)
 ```
 
 ```
+range : Char, Char -> Parser(Char)
+range(a, c)
+```
+
+```
 oneOf : Array(Char) -> Parser(Char)
 oneOf(s)
 ```

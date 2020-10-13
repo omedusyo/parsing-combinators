@@ -6,8 +6,8 @@ import {
   pair, first, second, map2,
   repeat, forEach, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
-  or, any, maybe, ifFails, setError, mapError,
-  satisfies, string, end, take, lookahead,
+  or, any, maybe, ifFails, setError, mapError, lookahead,
+  satisfies, range, string, end, take,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -339,6 +339,23 @@ assert("take:3", take1.val === "");
 const take2 = take(3).consume("h");
 assert("take:4", ParserValue.hasFailed(take2));
 assert("take:5", take2.message === 1);
+
+// === range ===
+const range0 = range("a", "d").consume("axxx");
+assert("range:0", range0.rest == "xxx");
+assert("range:1", range0.val === "a");
+
+const range1 = range("a", "d").consume("dxxx");
+assert("range:2", range1.rest == "xxx");
+assert("range:3", range1.val === "d");
+
+const range2 = range("a", "d").consume("bxxx");
+assert("range:4", range2.rest == "xxx");
+assert("range:5", range2.val === "b");
+
+const range3 = range("a", "d").consume("exxx");
+// console.log(range3);
+assert("range:6", ParserValue.hasFailed(range3));
 
 
 // === nat ===
