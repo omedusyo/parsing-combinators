@@ -1,4 +1,6 @@
 
+import 'regenerator-runtime/runtime'
+
 import {
   ParserValue,
   succeed, then,
@@ -7,7 +9,8 @@ import {
   repeat, forEach, sequence, maps,
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, maybe, ifFails, setError, mapError, lookahead,
-  satisfies, range, string, end, take,
+  satisfies, range, char, string, end, take,
+  doParsing
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -357,6 +360,27 @@ const range3 = range("a", "d").consume("exxx");
 // console.log(range3);
 assert("range:6", ParserValue.hasFailed(range3));
 
+// === GENERATORS ===
+const gen0p = doParsing(function* () {
+  yield char("(");
+  const n = yield digit;
+  const m = yield digit;
+  yield char(")");
+  return n + m;
+});
+const gen0 = gen0p.consume("(12)xx");
+assert("gen:0", gen0.rest == "xx");
+assert("gen:1", gen0.val === 3);
+
+const gen1 = gen0p.consume("(56)xx");
+assert("gen:2", gen1.rest == "xx");
+assert("gen:3", gen1.val === 11);
+
+const gen2 = gen0p.consume("(5)xx");
+assert("gen:4", ParserValue.hasFailed(gen2));
+
+const gen3 = gen0p.consume("x(5)xx");
+assert("gen:5", ParserValue.hasFailed(gen3));
 
 // === nat ===
 const nat0 = nat.consume("123xxx");

@@ -295,3 +295,19 @@ take : Nat -> Parser(String)
 take(N)
 ```
 
+Basically Haskell do-notation ported to JS
+```
+doParsing : ??? -> Parser(A)
+```
+for example
+```
+doParsing(function* () {
+  yield char("(");
+  const n = yield digit;
+  const m = yield digit;
+  yield char(")");
+  return n + m;
+});
+```
+returns a parser that expects an open paren, then two digits, then closed paren, and returns the sum of the two digits as a result.
+ 

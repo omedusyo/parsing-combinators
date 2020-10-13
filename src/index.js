@@ -560,5 +560,37 @@ export function take(N) {
   });
 }
 
-
+// TODO: should we take care of the js's use of return in a generator spawner?
+// Saw the idea of using generators for parsing in Low Level Javscript youtube channel.
+// This is ofcourse completely generic for all monads, very nice.
+// It's a bit strange that we could potentially pass in an infinite stream of parsers.
+export function doParsing(spawn_iterator) {
+  return Parser(s => {
+    const P = spawn_iterator(); // iterator of parsers (i.e. an object with value & next fields)
+    let input = undefined; // first input can't be used in iterator's body, so it doesn't matter what it is.
+    while (true) {
+      const result = P.next(input);
+      if (result.done) {
+        // to understand this, first read the else branch, then this
+        // finish
+        //
+        // here we assume that result.value is a normal value, and not a parser
+        // so we'll just succeed with that value
+        return success({ val: result.value, rest: s});
+      } else {
+        // continue
+        //
+        // here we assume that the yielded value is actually a parser
+        const p = result.value;
+        const v = p.consume(s);
+        s = v.rest;
+        if (hasSucceeded(v)) {
+          input = v.val;
+        } else {
+          return failure(v);
+        }
+      }
+    }
+  });
+}
 
