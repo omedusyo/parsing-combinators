@@ -507,8 +507,21 @@ export function char(c0) {
   return satisfies(c => c === c0);
 }
 
+const digits2values = {
+  ["0"]:0,
+  ["1"]:1,
+  ["2"]:2,
+  ["3"]:3,
+  ["4"]:4,
+  ["5"]:5,
+  ["6"]:6,
+  ["7"]:7,
+  ["8"]:8,
+  ["9"]:9,
+};
 // Parser({0, 1, ..., 9})
-export const digit = satisfies(isDigit);
+// {}
+export const digit = satisfies(isDigit).map(d => digits2values[d]);
 
 // Array(Char) -> Parser(Char)
 export function oneOf(xs) {
