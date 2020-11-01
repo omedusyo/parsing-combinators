@@ -311,3 +311,7 @@ doParsing(function* () {
 ```
 returns a parser that expects an open paren, then two digits, then closed paren, and returns the sum of the two digits as a result.
  
+
+```
+nat  : Parser({0, 1, 2, 3, ...})
+```
