@@ -10,7 +10,8 @@ import {
   maximalMunch, maximalReduce, maximalMunchDiscard,
   or, any, maybe, ifFails, setError, mapError, lookahead,
   satisfies, range, char, string, end, take,
-  doParsing
+  doParsing,
+  takeUntil,
 } from "../src/index";
 
 import { digit } from "./example0_digits";
@@ -20,7 +21,6 @@ import { binexp, showbinexp } from "./example3_arith_binary_expressions";
 import {  } from "./example4_arith_expressions";
 import {  } from "./example5_balanced_paren";
 import {  } from "./example6_balanced_parens";
-import {  } from "./example7_palindroms";
 
 function assert(id, b) {
   if (b === false) {
@@ -381,6 +381,19 @@ assert("gen:4", ParserValue.hasFailed(gen2));
 
 const gen3 = gen0p.consume("x(5)xx");
 assert("gen:5", ParserValue.hasFailed(gen3));
+
+// === takeUntil ===
+const takeUntil0 = takeUntil(c => c === "\n").consume("foobar\nfoo");
+assert("takeUntil:0", takeUntil0.rest == "\nfoo");
+assert("takeUntil:1", takeUntil0.val === "foobar");
+
+const takeUntil1 = takeUntil(c => c === "#").consume("foobar");
+assert("takeUntil:2", takeUntil1.rest == "");
+assert("takeUntil:3", takeUntil1.val === "foobar");
+
+const takeUntil2 = takeUntil(c => c === "#").consume("");
+assert("takeUntil:3", takeUntil2.rest == "");
+assert("takeUntil:4", takeUntil2.val === "");
 
 // === nat ===
 const nat0 = nat.consume("123xxx");

@@ -636,3 +636,19 @@ export const nat = Parser(s0 => {
   }
 });
 
+// === takeUntil ===
+// takeUntil = consumes until it sees a character that satisfies the predicate
+// It returns all the characters at the beginning that did not satisfy the predicate as a string.
+// (Char -> Bool) -> Parser(String)
+export function takeUntil(pred) {
+  return Parser(s0 => {
+    for (let i = 0; i < s0.length; i++) {
+      if (pred(s0[i])) {
+        return success({ val: s0.slice(0, i), rest: s0.slice(i)});
+      }
+    }
+
+    return success({ val: s0, rest: "" });
+  });
+}
+

@@ -315,3 +315,12 @@ returns a parser that expects an open paren, then two digits, then closed paren,
 ```
 nat  : Parser({0, 1, 2, 3, ...})
 ```
+
+Returns all the characters (as a string) at the beginning that do not satisfy the predicate.
+```
+takeUntil : (Char -> Bool) -> Parser(String)
+takeUntil(c => ...)
+
+```
+e.g. `takeUntil(c => c == "\n")` consumes everything until it sees the end of the line character.
+
